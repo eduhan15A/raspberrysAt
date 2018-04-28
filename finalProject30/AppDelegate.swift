@@ -13,9 +13,23 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var pContainer: NSPersistentContainer!
+    var mOContext: NSManagedObjectContext!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        pContainer = NSPersistentContainer(name: "finalProject30" )
+        
+        pContainer.loadPersistentStores(completionHandler: {( storyDescription, error) in
+            if error == nil
+            {
+                self.mOContext = self.pContainer.viewContext
+            }
+            else{
+                print("Error al asignar el contexto :(")
+            }
+        });
+
         // Override point for customization after application launch.
         return true
     }

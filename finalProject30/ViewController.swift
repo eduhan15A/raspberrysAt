@@ -9,11 +9,13 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
-
+ var context: NSManagedObjectContext!
     @IBOutlet weak var map: MKMapView!
     
+    @IBOutlet weak var txbDate: UITextField!
     var ids = [String]()
     var longitudes = [String]()
     var latitudes = [String]()
@@ -22,6 +24,116 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var temperatures = [String]()
     var devices = [String]()
     var locationManager: CLLocationManager!
+    var temperaturaSeleccionada:Temperatures!
+    
+    @IBAction func consultar(_ sender: UIButton) {
+        self.view.endEditing(true)
+       // print(txbDate.text!)
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.timeStyle = DateFormatter.Style.short
+
+        
+        guard var selectedDate = dateFormatter.date(from: txbDate.text!) else {
+            fatalError("ERROR: Date conversion failed due to mismatched format.")
+        }
+        guard var dateDown = dateFormatter.date(from: txbDate.text!) else {
+            fatalError("ERROR: Date conversion failed due to mismatched format.")
+        }
+        
+        guard var dateUp = dateFormatter.date(from: txbDate.text!) else {
+            fatalError("ERROR: Date conversion failed due to mismatched format.")
+        }
+        
+        //print(dateDown)
+       // selectedDate = selectedDate.addingTimeInterval(60.0 * 60 * 7)
+        dateDown = dateDown.addingTimeInterval( 60.0 * -30)
+        dateUp = dateUp.addingTimeInterval(60.0 * 30)
+        
+        dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+        print(dateFormatter.string(from:selectedDate))
+        print(dateFormatter.string(from:dateDown))
+        print(dateFormatter.string(from:dateUp))
+        let url = URL(string: "http://www.itesi.xyz/webservices/damAPI/")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        let postString = "{\"action\" :\"GetTemperatureFromDate\",\"dateDown\":\""+dateFormatter.string(from:dateDown)+"\",\"dateUp\":\""+dateFormatter.string(from:dateUp)+"\"}";
+        print(postString)
+        
+        request.httpBody = postString.data(using: .utf8)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(error)")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
+            }
+            
+            let responseString = String(data: data, encoding: .utf8)
+            print(responseString)
+            self.printDots(response:responseString!)
+            self.saveTemperatures()
+        }
+        task.resume()
+
+        
+    }
+    
+    func saveTemperatures(){
+        if( ids.count>0){
+            for i in 0 ... ids.count-1{
+                print(devices[i])
+                let newTemperature = Temperatures(context: context)
+                newTemperature.idMedition = ids[i]
+                newTemperature.length = longitudes[i]
+                newTemperature.latitude = latitudes[i]
+                newTemperature.elevation = elevations[i]
+                newTemperature.datetime = dates[i]
+                newTemperature.temperature = temperatures[i]
+                newTemperature.device = devices[i]
+                
+                do{
+                    try
+                        context.save()
+                    print("saved")
+                } catch{ print("Error")}
+            }
+                
+            }
+        
+        }
+        
+    @IBAction func backMateria (_ segue: UIStoryboardSegue){
+        if segue.identifier == "backFromListTemperatures"{
+            let controller = segue.source as! TemperaturesTableViewController
+            temperaturaSeleccionada = controller.temperaturaSeleccionada
+         //   materia.text = materiaSeleccionada.nombre
+            print(temperaturaSeleccionada)
+            
+             map.removeAnnotations(map.annotations)
+            let artwork = Artwork(title: temperaturaSeleccionada.device!,
+                                  locationName: temperaturaSeleccionada.temperature!+"°C "+temperaturaSeleccionada.datetime!,
+                                  discipline: "",
+                                  coordinate: CLLocationCoordinate2D(latitude: Double(temperaturaSeleccionada.latitude!)!, longitude: Double(temperaturaSeleccionada.length!)!))
+            map.addAnnotation(artwork)
+        }
+        
+        
+    }
+    @IBAction override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == "segueIdentifierMainToTemperatures"{
+            let listarMateriasTableViewController = segue.destination as! TemperaturesTableViewController
+            listarMateriasTableViewController.origen = "TabTemperatureViewController"
+        }
+        
+    }
+    
     
     
     override func viewDidLoad() {
@@ -35,13 +147,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         map.delegate = self
+        let app = UIApplication.shared
+        let appDelegate = app.delegate as! AppDelegate
+        context = appDelegate.mOContext
         
+
+        
+       getCurrentTemperatures()
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    
+    
+    @IBAction func getCurrentTemperatures(_ sender: UIButton) {
+        getCurrentTemperatures()
+    }
+    func getCurrentTemperatures(){
         let url = URL(string: "http://www.itesi.xyz/webservices/damAPI/")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         let postString = "{\"action\":\"GetTemperature\"}";
-       request.httpBody = postString.data(using: .utf8)
+        request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {                                                 // check for fundamental networking error
                 print("error=\(error)")
@@ -57,10 +184,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.printDots(response:responseString!)
         }
         task.resume()
-        // Do any additional setup after loading the view, typically from a nib.
+        
     }
-
+    @IBAction func textFieldEditing(_ sender: UITextField) {
+        let datePickerView:UIDatePicker = UIDatePicker()
+        datePickerView.datePickerMode = UIDatePickerMode.dateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(ViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
+    }
+    
+    @objc func datePickerValueChanged(sender:UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.timeStyle = DateFormatter.Style.short
+        txbDate.text = dateFormatter.string(from:sender.date)
+    }
+ 
+    
+    
     func printDots(response:String)-> Bool{
+       
+         ids = [String]()
+        longitudes = [String]()
+         latitudes = [String]()
+         elevations = [String]()
+         dates = [String]()
+         temperatures = [String]()
+         devices = [String]()
+        //map.removeAnnotations(map.annotations)
+       /* let annotationsToRemove = map.annotations.filter { $0 !== map.userLocation }
+        map.removeAnnotations( annotationsToRemove )*/
+        
+        map.removeAnnotations(map.annotations)
+        
         print("responseString = \(response)")
         do {
             let data = response.data(using: .utf8)
@@ -97,7 +253,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
       //  print(devices)
        // print(temperatures)
-        
+        if( ids.count>0){
         for i in 0 ... ids.count-1{
             print(devices[i])
             print(temperatures[i])
@@ -107,6 +263,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                   discipline: "",
                                   coordinate: CLLocationCoordinate2D(latitude: Double(latitudes[i])!, longitude: Double(longitudes[i])!))
             map.addAnnotation(artwork)
+            }
         }
         
         return true

@@ -10,9 +10,11 @@
 		4B220BF2208EDB2B00E24C23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B220BF1208EDB2B00E24C23 /* AppDelegate.swift */; };
 		4B220BF4208EDB2B00E24C23 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B220BF3208EDB2B00E24C23 /* ViewController.swift */; };
 		4B220BF7208EDB2B00E24C23 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B220BF5208EDB2B00E24C23 /* Main.storyboard */; };
-		4B220BFA208EDB2B00E24C23 /* finalProject30.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B220BF8208EDB2B00E24C23 /* finalProject30.xcdatamodeld */; };
 		4B220BFC208EDB2B00E24C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B220BFB208EDB2B00E24C23 /* Assets.xcassets */; };
 		4B220BFF208EDB2B00E24C23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B220BFD208EDB2B00E24C23 /* LaunchScreen.storyboard */; };
+		4BA38E3F20942A1300002615 /* finalProject30.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BA38E3D20942A1300002615 /* finalProject30.xcdatamodeld */; };
+		4BA38E4120942E1700002615 /* TemperaturesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA38E4020942E1700002615 /* TemperaturesTableViewController.swift */; };
+		4BA38E4320942E3700002615 /* TemperaturesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA38E4220942E3700002615 /* TemperaturesTableViewCell.swift */; };
 		4BB920132090586300C0FC53 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB920122090586300C0FC53 /* Artwork.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,10 +23,12 @@
 		4B220BF1208EDB2B00E24C23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B220BF3208EDB2B00E24C23 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4B220BF6208EDB2B00E24C23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		4B220BF9208EDB2B00E24C23 /* finalProject30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = finalProject30.xcdatamodel; sourceTree = "<group>"; };
 		4B220BFB208EDB2B00E24C23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B220BFE208EDB2B00E24C23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B220C00208EDB2B00E24C23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BA38E3E20942A1300002615 /* finalProject30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = finalProject30.xcdatamodel; sourceTree = "<group>"; };
+		4BA38E4020942E1700002615 /* TemperaturesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperaturesTableViewController.swift; sourceTree = "<group>"; };
+		4BA38E4220942E3700002615 /* TemperaturesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperaturesTableViewCell.swift; sourceTree = "<group>"; };
 		4BB920122090586300C0FC53 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,13 +63,15 @@
 		4B220BF0208EDB2B00E24C23 /* finalProject30 */ = {
 			isa = PBXGroup;
 			children = (
+				4BA38E3D20942A1300002615 /* finalProject30.xcdatamodeld */,
 				4B220BF1208EDB2B00E24C23 /* AppDelegate.swift */,
 				4B220BF3208EDB2B00E24C23 /* ViewController.swift */,
 				4B220BF5208EDB2B00E24C23 /* Main.storyboard */,
+				4BA38E4020942E1700002615 /* TemperaturesTableViewController.swift */,
+				4BA38E4220942E3700002615 /* TemperaturesTableViewCell.swift */,
 				4B220BFB208EDB2B00E24C23 /* Assets.xcassets */,
 				4B220BFD208EDB2B00E24C23 /* LaunchScreen.storyboard */,
 				4B220C00208EDB2B00E24C23 /* Info.plist */,
-				4B220BF8208EDB2B00E24C23 /* finalProject30.xcdatamodeld */,
 			);
 			path = finalProject30;
 			sourceTree = "<group>";
@@ -145,7 +151,9 @@
 				4B220BF4208EDB2B00E24C23 /* ViewController.swift in Sources */,
 				4B220BF2208EDB2B00E24C23 /* AppDelegate.swift in Sources */,
 				4BB920132090586300C0FC53 /* Artwork.swift in Sources */,
-				4B220BFA208EDB2B00E24C23 /* finalProject30.xcdatamodeld in Sources */,
+				4BA38E4120942E1700002615 /* TemperaturesTableViewController.swift in Sources */,
+				4BA38E4320942E3700002615 /* TemperaturesTableViewCell.swift in Sources */,
+				4BA38E3F20942A1300002615 /* finalProject30.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,12 +338,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4B220BF8208EDB2B00E24C23 /* finalProject30.xcdatamodeld */ = {
+		4BA38E3D20942A1300002615 /* finalProject30.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				4B220BF9208EDB2B00E24C23 /* finalProject30.xcdatamodel */,
+				4BA38E3E20942A1300002615 /* finalProject30.xcdatamodel */,
 			);
-			currentVersion = 4B220BF9208EDB2B00E24C23 /* finalProject30.xcdatamodel */;
+			currentVersion = 4BA38E3E20942A1300002615 /* finalProject30.xcdatamodel */;
 			path = finalProject30.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
